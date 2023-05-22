@@ -6,8 +6,12 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { MiddlewareService } from 'src/auth/nest-middleware';
 import { JwtMiddlewareService } from 'src/auth/jwt-middleware';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import  applicationConfig  from 'src/config/app.config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
+import { CommonServices } from './utilities/common-service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,10 +19,33 @@ import  applicationConfig  from 'src/config/app.config';
       load: [applicationConfig],
       isGlobal: true
     }),
-    
-    UserModule],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+    ClientsModule.registerAsync([
+      {
+        name: 'USERS_PACKAGE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => {
+          const environment = configService.get<string>('application.msEnv');
+          const url = configService.get<string>(
+            `application.usersServiceUrl`,
+          );
+          return {
+            name: 'USERS_PACKAGE',
+            transport: Transport.GRPC,
+            options: {
+              package: 'users',
+              protoPath: join(__dirname, './protos/users/users.proto'),
+              url: url
+            },
+          };
+        },
+      }
+    ]),
+    UserModule,
+    CommonServices,
+    AuthModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule  {
   configure(consumer: MiddlewareConsumer) {

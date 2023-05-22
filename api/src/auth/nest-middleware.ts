@@ -13,7 +13,8 @@ export class MiddlewareService implements NestMiddleware{
     ){}
 
     use(request: Request, response: Response, next: NextFunction){
-        const postRequest = ['/user/register']
+        const postRequest = ['/user/register','/user/login']
+        console.log(request.originalUrl)
         if(request.method === 'POST' && postRequest.includes(request.originalUrl)){
             next();
             return;

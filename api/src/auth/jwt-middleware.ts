@@ -5,7 +5,7 @@ export class JwtMiddlewareService implements NestMiddleware {
     constructor(){}
 
     use(request: Request, response: Response, next: NextFunction){
-        const postRequest = ['/user/register']
+        const postRequest = ['/user/register','/user/login']
         if(request.method === 'POST' && postRequest.includes(request.originalUrl)){
             next();
             return;
