@@ -27,6 +27,11 @@ export interface User {
   updatedDate: string;
   deletedBy: number;
   deletedDate: string;
+  dob: string;
+  country: string;
+  addressLine: string;
+  city: string;
+  uid: string;
 }
 
 export interface searchUserBy {

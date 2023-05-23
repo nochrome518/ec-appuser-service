@@ -32,6 +32,11 @@ message User {
     string updatedDate = 13;
     int32 deletedBy = 14;
     string deletedDate = 15;
+    string dob = 16;
+    string country = 17;
+    string addressLine = 18;
+    string city = 19;
+    string uid = 20;
 }
 
 message searchUserBy {

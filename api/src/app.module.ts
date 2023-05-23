@@ -12,7 +12,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { CommonServices } from './utilities/common-service';
 import { AuthModule } from './auth/auth.module';
-
+import { JWTokenModule } from './jwt/jwt.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
         useFactory: (configService: ConfigService) => {
           const environment = configService.get<string>('application.msEnv');
           const url = configService.get<string>(
-            `application.usersServiceUrl`,
+            `application.msUserLocal`,
           );
           return {
             name: 'USERS_PACKAGE',
@@ -43,7 +43,9 @@ import { AuthModule } from './auth/auth.module';
     ]),
     UserModule,
     CommonServices,
-    AuthModule],
+    AuthModule,
+    JWTokenModule],
+
   controllers: [AppController],
   providers: [AppService],
 })

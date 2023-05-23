@@ -5,6 +5,10 @@ export class CreateUserRequest {
     @IsNotEmpty() fullName: string;
     @IsNotEmpty() email: string;
     @IsNotEmpty() password: string;
-    phoneNo: string;
-    @IsIn(Object.values(UserType)) type: string; 
+    phoneNumber: string;
+    @IsIn(Object.values(UserType)) type: string;
+    @IsNotEmpty() dob: string;
+    city: string;
+    addressLine: string;
+    country: string;
 }

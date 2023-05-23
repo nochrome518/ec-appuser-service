@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { CommonServices } from 'src/utilities/common-service';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtService } from 'src/jwt/jwt.service';
 @Module({
       imports: [
     ConfigModule.forRoot({
@@ -21,22 +22,22 @@ import { AuthService } from 'src/auth/auth.service';
         useFactory: (configService: ConfigService) => {
             const environment = configService.get<string>('application.msEnv');
             const url = configService.get<string>(
-              `application.usersServiceUrl`,
+              `application.msUserLocal`,
             );
-          return {
-            name: 'USERS_PACKAGE',
-            transport: Transport.GRPC,
-            options: {
-              package: 'users',
-              protoPath: join(__dirname, './protos/users/users.proto'),
-              url: url
-            },
-          };
+          	return {
+				name: 'USERS_PACKAGE',
+				transport: Transport.GRPC,
+				options: {
+				package: 'users',
+				protoPath: join(__dirname, './protos/users/users.proto'),
+				url: url
+				},
+            };
         },
       }
     ]),
     UserModule,],
   controllers: [UserController],
-  providers: [UserService,CommonServices,AuthService],
+  providers: [UserService,CommonServices,AuthService,JwtService],
 })
 export class UserModule {}
