@@ -30,6 +30,13 @@ export class UserService {
     }
 
     async createUser(createUserRequest: CreateUserRequest): Promise<any> {
+        const searchUserBy: searchUserBy = {} as searchUserBy;
+        searchUserBy.email = createUserRequest.email;
+        const userFound = await this.userService.searchUser(searchUserBy).toPromise(); 
+        if(userFound && userFound.users){
+            throw new UnauthorizedException(Messages.EMAIL_EXISTS);
+        }
+
         const createUser: User = createUserRequest as any;
         const hashedPass = await this.authService.hashPassword(createUserRequest.password);
         createUser.password = hashedPass;
