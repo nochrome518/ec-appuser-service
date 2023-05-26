@@ -4,9 +4,10 @@ package users;
 service UsersService {
     rpc getAll(EmptyArgument) returns (Users);
     rpc createUser(User) returns (User);
-    rpc searchUser(searchUserBy) returns (Users);
+    rpc searchUser(SearchUserBy) returns (Users);
     rpc updateUser(User) returns (User);
     rpc deleteUser(User) returns (User);
+    rpc getUserReport(SearchUserBy) returns (UserReport);
 
 }
 
@@ -39,7 +40,7 @@ message User {
     string uid = 20;
 }
 
-message searchUserBy {
+message SearchUserBy {
     int32 id = 1;
     string fullName = 2;
     string displayName = 3;
@@ -48,4 +49,12 @@ message searchUserBy {
     string phoneNumber = 6;
     string type = 7;
     int32 status = 8;
+    int32 take = 9;
+    int32 skip = 10;
+}
+
+message UserReport {
+    Users data = 1;
+    int32 total = 2;
+    int32 count = 3;
 }

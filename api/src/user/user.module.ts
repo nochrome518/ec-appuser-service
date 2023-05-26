@@ -8,6 +8,7 @@ import { UserController } from './user.controller';
 import { CommonServices } from 'src/utilities/common-service';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtService } from 'src/jwt/jwt.service';
+import { DateTimeService } from 'src/utilities/date-time.service';
 @Module({
       imports: [
     ConfigModule.forRoot({
@@ -38,6 +39,6 @@ import { JwtService } from 'src/jwt/jwt.service';
     ]),
     UserModule,],
   controllers: [UserController],
-  providers: [UserService,CommonServices,AuthService,JwtService],
+  providers: [UserService,CommonServices,AuthService,JwtService,DateTimeService],
 })
 export class UserModule {}

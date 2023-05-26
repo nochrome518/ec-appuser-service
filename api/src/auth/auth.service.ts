@@ -21,6 +21,7 @@ export class AuthService {
 		let responseData: UserLoginResponse = {} as UserLoginResponse;
 		responseData.id = user.id;
 		responseData.accessToken = token;
+		responseData.role = user.type;
 		responseData.email = user.email;
 		responseData.phoneNumber = user.phoneNumber;
 		responseData.cartId = user.cartId;

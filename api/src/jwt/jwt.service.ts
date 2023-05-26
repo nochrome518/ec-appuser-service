@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 import applicationConfig from 'src/config/app.config';
@@ -26,8 +26,9 @@ export class JwtService {
 			iat: iatTime,
 			exp: expiry,
 			userId: payload.id,
+			uid:  payload.uid,
 			email: payload.email,
-			type: payload.type,
+			role: payload.type,
 			expiresIn: this.expiresIn,
 		}, this.secretKey, { algorithm: "RS256" });
 
@@ -38,7 +39,7 @@ export class JwtService {
 		try {
 			return jwt.verify(token, this.secretKey);
 		} catch (error) {
-			throw new Error('Invalid token');
+			throw new UnauthorizedException('Invalid token');
 		}
 	}
 

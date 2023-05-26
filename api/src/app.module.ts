@@ -44,7 +44,7 @@ import { JWTokenModule } from './jwt/jwt.module';
     UserModule,
     CommonServices,
     AuthModule,
-    JWTokenModule],
+    JWTokenModule,],
 
   controllers: [AppController],
   providers: [AppService],
