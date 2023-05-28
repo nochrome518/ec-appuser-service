@@ -1,0 +1,54 @@
+syntax = 'proto3';
+package products;
+
+
+service ProductsService {
+    rpc getAll(EmptyArgument) returns (Products);
+    rpc createProduct(Product) returns (Product);
+    rpc searchProduct(SearchProductBy) returns (Products);
+    rpc updateProduct(Product) returns (Product);
+    rpc deleteProduct(Product) returns (Product);
+    rpc getProductReport(SearchProductBy) returns (ProductReport);
+
+}
+
+message EmptyArgument {}
+
+message Products {
+    repeated Product products = 1;
+}
+
+message Product {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 price = 4;
+    int32 quantity = 5;
+    int32 status = 6;
+    int32 createdBy = 7;
+    string createdDate = 8;
+    int32 updatedBy = 9;
+    string updatedDate = 10;
+    int32 deletedBy = 11;
+    string deletedDate = 12;
+    string category = 13;
+}
+
+message SearchProductBy {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    int32 price = 4;
+    int32 quantity = 5;
+    int32 status = 6;
+    int32 createdBy = 7;
+    string category = 8;
+    int32 take = 9;
+    int32 skip = 10;
+}
+
+message ProductReport {
+    Products data = 1;
+    int32 total = 2;
+    int32 count = 3;
+}

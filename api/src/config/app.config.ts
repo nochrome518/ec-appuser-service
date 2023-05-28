@@ -9,5 +9,7 @@ export default registerAs('application', () => ({
     /* -- MicroService Config -- */
     msUserLocal: 'localhost:9000',
     msUserDev: 'localhost:9000', 
+    msProductLocal: 'localhost:9001',
+    msProductDev: 'localhost:9001', 
     /* -- MicroService Config -- */
 }));

@@ -6,4 +6,4 @@ export class UserResponse {
     count: number;
     page: number;
     pageCount?: number;
-  }
+}

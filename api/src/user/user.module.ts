@@ -30,7 +30,7 @@ import { DateTimeService } from 'src/utilities/date-time.service';
 				transport: Transport.GRPC,
 				options: {
 				package: 'users',
-				protoPath: join(__dirname, './protos/users/users.proto'),
+				protoPath: join(__dirname, '../protos/users/users.proto'),
 				url: url
 				},
             };

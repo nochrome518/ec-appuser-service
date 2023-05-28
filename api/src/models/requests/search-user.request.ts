@@ -9,4 +9,4 @@ export interface SearchUserRequest {
     status: number;
     pageSize: number;
     pageIndex: number;
-  }
+}

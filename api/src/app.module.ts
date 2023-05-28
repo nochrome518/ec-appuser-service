@@ -13,6 +13,7 @@ import { join } from 'path';
 import { CommonServices } from './utilities/common-service';
 import { AuthModule } from './auth/auth.module';
 import { JWTokenModule } from './jwt/jwt.module';
+import { ProductModule } from './product/product.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,7 +28,7 @@ import { JWTokenModule } from './jwt/jwt.module';
         useFactory: (configService: ConfigService) => {
           const environment = configService.get<string>('application.msEnv');
           const url = configService.get<string>(
-            `application.msUserLocal`,
+            `application.msUser${environment}`,
           );
           return {
             name: 'USERS_PACKAGE',
@@ -39,12 +40,31 @@ import { JWTokenModule } from './jwt/jwt.module';
             },
           };
         },
-      }
+      },
+      {
+        name: 'PRODUCTS_PACKAGE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => {
+          const environment = configService.get<string>('application.msEnv');
+          const url = configService.get<string>(`application.msProduct${environment}`);
+          return {
+            name: 'PRODUCTS_PACKAGE',
+            transport: Transport.GRPC,
+            options: {
+              url: url,
+              package: 'products',
+              protoPath: join(__dirname, './protos/products/products.proto'),
+            },
+          }
+        }
+      },
     ]),
     UserModule,
     CommonServices,
     AuthModule,
-    JWTokenModule,],
+    JWTokenModule,
+    ProductModule,],
 
   controllers: [AppController],
   providers: [AppService],
