@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable, NestMiddleware, Unauthor
 import { ConfigType } from "@nestjs/config";
 import { Request, Response, NextFunction } from 'express';
 import  applicationConfig from 'src/config/app.config';
-import { Messages } from 'src/utilities/messages'
+import { Messages } from 'src/constants/messages'
 
 @Injectable()
 export class MiddlewareService implements NestMiddleware{
@@ -13,15 +13,16 @@ export class MiddlewareService implements NestMiddleware{
     ){}
 
     use(request: Request, response: Response, next: NextFunction){
-        const postRequest = ['/user/register']
+        const postRequest = ['/user/register','/user/login']
+        console.log(request.originalUrl)
         if(request.method === 'POST' && postRequest.includes(request.originalUrl)){
             next();
             return;
         }
 
-        if (!request.headers["api-key"]){
+        if (!request.headers["x-api-key"]){
             throw new UnauthorizedException();
-        } else if (this.appConfig.apiKey != request.headers["api-key"]){
+        } else if (this.appConfig.apiKey != request.headers["x-api-key"]){
             throw new HttpException({status: HttpStatus.FORBIDDEN, error: Messages.INVALID_API_KEY}, HttpStatus.FORBIDDEN);
         }
         next();

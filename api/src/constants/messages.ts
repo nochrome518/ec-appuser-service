@@ -1,0 +1,20 @@
+
+export const Messages = {
+    EMAIL_EXISTS: "Email id already exists",
+    USER_CREATED: "User created successfully",
+    USER_UPDATED: "User updated successfully",
+    USER_DELETED: "User deleted successfully",
+    USER_LIST:'User list retrieved successfully',
+    TOKEN_GENERATE: "Token Generated Successfully",
+    INVALID_USER: "User not found.",
+    INVALID_USER_EMAIL: "User/Email not found.",
+    SUCCESS: "Data retrieved successfully",
+    NO_DATA: "No Data Found",
+    INVALID_API_KEY: "Invalid X-API-KEY",
+    NO_PERMISSION: "Permission denied for User",
+    PRODUCT_CREATED: "Product created successfully",
+    INVALID_PRODUCT: "Product not found.",
+    PRODUCT_UPDATED: "Product updated successfully",
+    PRODUCT_DELETED: "Product deleted successfully",
+    PRODUCT_LIST: 'Product list retrieved successfully',
+}
