@@ -8,7 +8,7 @@ import { CreateMerchantBO, CreateMerchantRequest, SearchMerchantRequest, UpdateM
 import { Messages } from 'src/constants/messages';
 import { Status } from 'src/models/enums/status.enum'
 import { MerchantResponse } from 'src/models/responses/merchant.response';
-import { SearchUserBy, UsersServiceClient } from 'src/protos/users/users.service';
+import { SearchUserBy, User, UsersServiceClient } from 'src/protos/users/users.service';
 import { UserType } from 'src/models/enums/user-type.enum';
 
 @Injectable()
@@ -39,7 +39,12 @@ export class MerchantService {
         const createMerchant: Merchant = createMerchantRequest as any;
         createMerchant.createdBy = user.userId;
         createMerchant.userId = user.userId;
-        await this.merchantService.createMerchant(createMerchant).toPromise()
+        const merchantCreate = await this.merchantService.createMerchant(createMerchant).toPromise()
+        let updateUser: User = {} as User;
+        updateUser.id = updateUser.updatedBy =  user.userId;
+        updateUser.updatedDate = this.dateTimeService.currentDate();
+        updateUser.merchantId = merchantCreate.id;
+        await this.userService.updateUser(updateUser).toPromise();
         return this.commonFunctionService.successResponse(Messages.MERCHANT_CREATED);
     }
 
@@ -52,6 +57,10 @@ export class MerchantService {
         }
 
         let currentMerchant: Merchant = merchantData.merchants[0];
+        if(currentMerchant.userId != user.userId && user.role != UserType.Admin){
+            throw new UnauthorizedException(Messages.NO_PERMISSION);
+        }
+
         currentMerchant.updatedBy = user.userId;
         currentMerchant.updatedDate = this.dateTimeService.currentDate();
         currentMerchant = Object.assign(currentMerchant, updateMerchantRequest);
@@ -67,11 +76,15 @@ export class MerchantService {
             throw new UnauthorizedException(Messages.INVALID_MERCHANT);
         }
 
-        let currentUser: Merchant = merchantData.merchants[0];
-        currentUser.status = Status.Deleted;
-        currentUser.deletedBy = user.userId;
-        currentUser.deletedDate = currentUser.updatedDate = this.dateTimeService.currentDate();
-        await this.merchantService.deleteMerchant(currentUser).toPromise();
+        let currentMerchant: Merchant = merchantData.merchants[0];
+        if(currentMerchant.userId != user.userId && user.role != UserType.Admin){
+            throw new UnauthorizedException(Messages.NO_PERMISSION);
+        }
+
+        currentMerchant.status = Status.Deleted;
+        currentMerchant.deletedBy = user.userId;
+        currentMerchant.deletedDate = currentMerchant.updatedDate = this.dateTimeService.currentDate();
+        await this.merchantService.deleteMerchant(currentMerchant).toPromise();
         return this.commonFunctionService.successResponse(Messages.MERCHANT_DELETED);
     }
 
@@ -123,8 +136,15 @@ export class MerchantService {
         }
         
         const createMerchant: Merchant = createMerchantRequest as any;
-        createMerchant.createdBy = user.userId;
-        await this.merchantService.createMerchant(createMerchant).toPromise()
+        createMerchant.createdBy =  user.userId;
+        const merchantCreate = await this.merchantService.createMerchant(createMerchant).toPromise()
+        
+        let updateUser: User = {} as User;
+        updateUser.id = createMerchant.userId;
+        updateUser.updatedBy =  user.userId;
+        updateUser.updatedDate = this.dateTimeService.currentDate();
+        updateUser.merchantId = merchantCreate.id;
+        await this.userService.updateUser(updateUser).toPromise();
         return this.commonFunctionService.successResponse(Messages.MERCHANT_CREATED);
     }
 

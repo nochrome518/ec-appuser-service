@@ -25,6 +25,7 @@ export interface Product {
   deletedBy: number;
   deletedDate: string;
   category: string;
+  merchantId: number;
 }
 
 export interface SearchProductBy {
@@ -38,6 +39,7 @@ export interface SearchProductBy {
   category: string;
   take: number;
   skip: number;
+  merchantId: number;
 }
 
 export interface ProductReport {

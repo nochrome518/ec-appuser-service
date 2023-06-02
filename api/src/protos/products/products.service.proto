@@ -32,6 +32,7 @@ message Product {
     int32 deletedBy = 11;
     string deletedDate = 12;
     string category = 13;
+    int32 merchantId = 14;
 }
 
 message SearchProductBy {
@@ -45,6 +46,7 @@ message SearchProductBy {
     string category = 8;
     int32 take = 9;
     int32 skip = 10;
+    int32 merchantId = 11;
 }
 
 message ProductReport {

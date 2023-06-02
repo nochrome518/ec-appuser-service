@@ -38,6 +38,7 @@ message User {
     string addressLine = 18;
     string city = 19;
     string uid = 20;
+    int32 merchantId = 21;
 }
 
 message SearchUserBy {

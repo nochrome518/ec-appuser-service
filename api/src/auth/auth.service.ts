@@ -20,6 +20,7 @@ export class AuthService {
 		const token = await this.jwtService.generateToken(user)
 		let responseData: UserLoginResponse = {} as UserLoginResponse;
 		responseData.id = user.id;
+		responseData.merchantId = user.merchantId;
 		responseData.accessToken = token;
 		responseData.role = user.type;
 		responseData.email = user.email;

@@ -26,6 +26,7 @@ export class JwtService {
 			iat: iatTime,
 			exp: expiry,
 			userId: payload.id,
+			merchantId: payload.merchantId? payload.merchantId : '',
 			uid:  payload.uid,
 			email: payload.email,
 			role: payload.type,

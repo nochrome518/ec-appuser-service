@@ -24,13 +24,21 @@ export class ProductService {
     }
 
     async createProduct(createProductRequest: CreateProductRequest, user: AuthUser): Promise<any> {
+        if(!user.merchantId){
+            throw new UnauthorizedException(Messages.INVALID_MERCHANT);
+        }
+
         const createProduct: Product = createProductRequest as any;
         createProduct.createdBy = user.userId;
+        createProduct.merchantId = user.merchantId;
         await this.productService.createProduct(createProduct).toPromise()
         return this.commonFunctionService.successResponse(Messages.PRODUCT_CREATED);
     }
 
     async updateProductById(updateProductRequest: UpdateProductRequest, id: number, user: AuthUser): Promise<any> {
+        if(!user.merchantId){
+            throw new UnauthorizedException(Messages.INVALID_MERCHANT);
+        }
         const searchProductBy: SearchProductBy = {} as SearchProductBy;
         searchProductBy.id = id;
         const productData = await this.productService.searchProduct(searchProductBy).toPromise(); 
@@ -39,6 +47,10 @@ export class ProductService {
         }
 
         let currentProduct: Product = productData.products[0];
+        if(currentProduct.merchantId != user.merchantId){
+            throw new UnauthorizedException(Messages.INVALID_MERCHANT);
+        }
+
         currentProduct.updatedBy = user.userId;
         currentProduct.updatedDate = this.dateTimeService.currentDate();
         currentProduct = Object.assign(currentProduct, updateProductRequest);
@@ -54,11 +66,14 @@ export class ProductService {
             throw new UnauthorizedException(Messages.INVALID_PRODUCT);
         }
 
-        let currentUser: Product = productData.products[0];
-        currentUser.status = Status.Deleted;
-        currentUser.deletedBy = user.userId;
-        currentUser.deletedDate = currentUser.updatedDate = this.dateTimeService.currentDate();
-        await this.productService.deleteProduct(currentUser).toPromise();
+        let currentProduct: Product = productData.products[0];
+        if(currentProduct.merchantId != user.merchantId){
+            throw new UnauthorizedException(Messages.INVALID_MERCHANT);
+        }
+        currentProduct.status = Status.Deleted;
+        currentProduct.deletedBy = user.userId;
+        currentProduct.deletedDate = currentProduct.updatedDate = this.dateTimeService.currentDate();
+        await this.productService.deleteProduct(currentProduct).toPromise();
         return this.commonFunctionService.successResponse(Messages.PRODUCT_DELETED);
     }
 

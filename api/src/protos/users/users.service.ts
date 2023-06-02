@@ -32,6 +32,7 @@ export interface User {
   addressLine: string;
   city: string;
   uid: string;
+  merchantId: number;
 }
 
 export interface SearchUserBy {
