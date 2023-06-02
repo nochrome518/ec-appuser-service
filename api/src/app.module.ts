@@ -14,6 +14,7 @@ import { CommonServices } from './utilities/common-service';
 import { AuthModule } from './auth/auth.module';
 import { JWTokenModule } from './jwt/jwt.module';
 import { ProductModule } from './product/product.module';
+import { MerchantModule } from './merchant/merchant.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -59,12 +60,33 @@ import { ProductModule } from './product/product.module';
           }
         }
       },
+      {
+        name: 'MERCHANTS_PACKAGE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => {
+          const environment = configService.get<string>('application.msEnv');
+          const url = configService.get<string>(
+          `application.msMerchantLocal`,
+          );
+          return {
+            name: 'MERCHANTS_PACKAGE',
+            transport: Transport.GRPC,
+            options: {
+            package: 'merchants',
+            protoPath: join(__dirname, './protos/merchants/merchants.proto'),
+            url: url
+            },
+          };
+        },
+      }
     ]),
     UserModule,
     CommonServices,
     AuthModule,
     JWTokenModule,
-    ProductModule,],
+    ProductModule,
+    MerchantModule,],
 
   controllers: [AppController],
   providers: [AppService],

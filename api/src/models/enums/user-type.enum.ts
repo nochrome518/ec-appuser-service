@@ -1,4 +1,4 @@
 export enum UserType{
-    appuser = "appuser",
-    admin = "admin"
+    AppUser = "appuser",
+    Admin = "admin"
 }

@@ -11,5 +11,7 @@ export default registerAs('application', () => ({
     msUserDev: 'localhost:9000', 
     msProductLocal: 'localhost:9001',
     msProductDev: 'localhost:9001', 
+    msMerchantLocal: 'localhost:9002',
+    msMerchantDev: 'localhost:9002',
     /* -- MicroService Config -- */
 }));

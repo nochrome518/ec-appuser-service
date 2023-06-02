@@ -17,4 +17,10 @@ export const Messages = {
     PRODUCT_UPDATED: "Product updated successfully",
     PRODUCT_DELETED: "Product deleted successfully",
     PRODUCT_LIST: 'Product list retrieved successfully',
+    MERCHANT_CREATED: "Merchant created successfully",
+    INVALID_MERCHANT: "Merchant not found.",
+    MERCHANT_UPDATED: "Merchant updated successfully",
+    MERCHANT_DELETED: "Merchant deleted successfully",
+    MERCHANT_LIST: 'Merchant list retrieved successfully',
+    MERCHANT_EXISTS: "mId already exists or contact email already in use",
 }

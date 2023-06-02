@@ -64,6 +64,10 @@ export class UserService {
     }
 
     async updateUserById(updateUserRequest: UpdateUserRequest, id: number, user: AuthUser): Promise<any> {
+        if(id != user.userId && user.role != UserType.Admin){
+            throw new UnauthorizedException(Messages.NO_PERMISSION);
+        }
+
         const searchUserBy: SearchUserBy = {} as SearchUserBy;
         searchUserBy.id = id;
         const userData = await this.userService.searchUser(searchUserBy).toPromise(); 
@@ -80,6 +84,10 @@ export class UserService {
     }
 
     async deleteUserById(id: number, user: AuthUser): Promise<any> {
+        if(id != user.userId && user.role != UserType.Admin){
+            throw new UnauthorizedException(Messages.NO_PERMISSION);
+        }
+        
         const searchUserBy: SearchUserBy = {} as SearchUserBy;
         searchUserBy.id = id;
         const userData = await this.userService.searchUser(searchUserBy).toPromise(); 
@@ -96,7 +104,7 @@ export class UserService {
     }
 
     async getUsersList(userReportRequest: SearchUserRequest, user: AuthUser): Promise<any> {
-        if(user.role != UserType.admin){
+        if(user.role != UserType.Admin){
             throw new UnauthorizedException(Messages.NO_PERMISSION);
         }
 

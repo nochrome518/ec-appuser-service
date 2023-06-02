@@ -56,6 +56,10 @@ export class DateTimeService {
     }
 
     fromStringToISO(dateString: string): string {
-        return moment(dateString).toISOString();
+        try {
+            return moment(dateString).toISOString();
+        } catch(e) {
+            console.log(e)
+        }  
     }
 }

@@ -1,0 +1,65 @@
+syntax = 'proto3';
+package merchants;
+
+
+service MerchantsService {
+    rpc getAll(EmptyArgument) returns (Merchants);
+    rpc createMerchant(Merchant) returns (Merchant);
+    rpc searchMerchant(SearchMerchantBy) returns (Merchants);
+    rpc updateMerchant(Merchant) returns (Merchant);
+    rpc deleteMerchant(Merchant) returns (Merchant);
+    rpc getMerchantReport(SearchMerchantBy) returns (MerchantReport);
+
+}
+
+message EmptyArgument {}
+
+message Merchants {
+    repeated Merchant merchants = 1;
+}
+
+message Merchant {
+    int32 id = 1;
+    int32 mId = 2;
+    string companyName = 3;
+    string transactionEmail = 4;
+    int32 userId = 5;
+    string contactName = 6;
+    string contactPhone = 7;
+    string contactEmail = 8;
+    string contactAddress = 9;
+    string paymentMethod = 10;
+    string paymentDetails = 11;
+    string profileImage = 12;
+    string merchantStatus = 13;
+    int32 status = 14;
+    int32 createdBy = 15;
+    string createdDate = 16;
+    int32 updatedBy = 17;
+    string updatedDate = 18;
+    int32 deletedBy = 19;
+    string deletedDate = 20;
+}
+
+message SearchMerchantBy {
+    int32 id = 1;
+    int32 mId = 2;
+    string companyName = 3;
+    string transactionEmail = 4;
+    int32 userId = 5;
+    string contactName = 6;
+    string contactPhone = 7;
+    string contactEmail = 8;
+    string paymentMethod = 9;
+    string merchantStatus = 10;
+    int32 status = 11;
+    int32 createdBy = 12;
+    int32 take = 13;
+    int32 skip = 14;
+}
+
+message MerchantReport {
+    Merchants data = 1;
+    int32 total = 2;
+    int32 count = 3;
+}
